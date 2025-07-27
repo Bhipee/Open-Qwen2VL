@@ -200,6 +200,11 @@ class FinetuneDataset(Dataset[Dict[str, torch.Tensor]]):
             # Process Image --> get "pixel_values" (will either be a torch.Tensor OR a Dict[str,torch.Tensor])
             pixel_values = self.image_transform(Image.open(self.image_dir / image_path).convert("RGB"))
 
+            # if "ocr_vqa" not in self.examples[idx]["image"]:
+            #     pixel_values = self.image_transform(Image.open(self.image_dir / image_path).convert("RGB"))
+            # else:
+            #     pixel_values = None
+
             return dict(pixel_values=pixel_values, input_ids=input_ids, labels=labels)
 
         else:

@@ -1,0 +1,1 @@
+bash train_moe_server_megablock.sh 0726 moe-pretrain 2 1

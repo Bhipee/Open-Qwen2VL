@@ -148,3 +148,10 @@ dmypy.json
 # Caches and Datasets
 cache/
 data/
+
+Open-Qwen2VL-Data/
+Open-Qwen2VL-Data
+**/data/
+**/data
+**/checkpoints/
+**/core*

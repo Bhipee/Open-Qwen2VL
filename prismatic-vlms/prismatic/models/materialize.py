@@ -8,7 +8,7 @@ from typing import Optional, Tuple
 
 from transformers import PreTrainedTokenizerBase
 
-from prismatic.models.backbones.llm import LLMBackbone, LLaMa2LLMBackbone, LLaMa3LLMBackbone, MistralLLMBackbone, Phi3LLMBackbone, Qwen2LLMBackbone
+from prismatic.models.backbones.llm import LLMBackbone, LLaMa2LLMBackbone, LLaMa3LLMBackbone, MistralLLMBackbone, Phi3LLMBackbone, Qwen2LLMBackbone, Qwen3MoELLMBackbone, Qwen3MoEMegaBlockLLMBackbone
 from prismatic.models.backbones.vision import (
     CLIPViTBackbone,
     DinoCLIPViTBackbone,
@@ -87,6 +87,10 @@ LLM_BACKBONES = {
     "qwen2.5-1.5b": {"cls": Qwen2LLMBackbone, "kwargs": {}},
     "qwen2.5-1.5b-instruct": {"cls": Qwen2LLMBackbone, "kwargs": {}},
     "qwen2.5-7b-instruct": {"cls": Qwen2LLMBackbone, "kwargs": {}},
+    
+    # === Qwen3-MoE Backbones ===
+    "qwen3-30b-a3b": {"cls": Qwen3MoELLMBackbone, "kwargs": {}},
+    "qwen3-30b-a3b-megablock": {"cls": Qwen3MoEMegaBlockLLMBackbone, "kwargs": {}},
 }
 
 # fmt: on

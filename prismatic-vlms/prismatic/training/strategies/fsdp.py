@@ -223,6 +223,9 @@ class FSDPStrategy(TrainingStrategy):
             )
 
         # <FSDP> => note that FSDP will automatically take care of device placement (similar to `autocast`)
+        if torch.distributed.get_rank()==0:
+            import pdb
+            pdb.set_trace()
         self.vlm = FSDP(
             self.vlm,
             auto_wrap_policy=vlm_fsdp_wrapping_policy,

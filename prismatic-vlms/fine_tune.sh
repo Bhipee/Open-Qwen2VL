@@ -8,7 +8,7 @@ DATAPATH=$3
 
 
 # Run from the root of the repository
-torchrun --standalone --nnodes 1 --nproc-per-node 8 scripts/pretrain.py \
+torchrun --standalone --nnodes 1 --nproc-per-node 2 scripts/pretrain.py \
   --stage "finetune" \
   --model.type "one-stage+7b" \
   --model.model_id qwen2.5-1.5b-instruct-continue-training-${CKPTID} \
@@ -22,4 +22,4 @@ torchrun --standalone --nnodes 1 --nproc-per-node 8 scripts/pretrain.py \
   --run_root_dir checkpoints \
   --dataset.type "llava-v15" \
   --pretrained_checkpoint ${CKPT_PATH}/checkpoints/latest-checkpoint.pt \
-  --dataset.finetune_stage_components=["${DATAPATH}","data/llava/images/"]
+  --dataset.finetune_stage_components=["${DATAPATH}","llava/images/"]
