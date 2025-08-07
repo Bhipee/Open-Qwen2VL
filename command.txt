@@ -1,0 +1,9 @@
+# pretrain
+
+cd prismatic-vlms
+bash ./train.sh 1 pretrain 4 2
+
+# post-train
+
+cd prismatic-vlms/
+bash fine_tune.sh checkpoints/pretrain+qwen2.5-1.5b-instruct-continue-training-10+stage-pretrain+x7 10 llava/llava_v1_5_mix665k.json

@@ -196,9 +196,34 @@ class TrainingStrategy(ABC):
                             # multimodal_indices=batch["multimodal_indices"],
                         )
                         loss = output.loss
+                        #### MOE ####
+                        if "moe" in stage:
+                            try:
+                                from megablocks.layers.moe import batched_load_balancing_loss, clear_load_balancing_loss
+                                from megablocks.layers.arguments import Arguments as MoEArgs
+                            except ImportError:
+                                logging.warning(f"Megablocks not installed. To train MoE, install with pip install megablocks.")
+                            moe_args = MoEArgs(
+                                hidden_size=config.hidden_size,
+                                ffn_hidden_size=config.intermediate_size if config.intermediate_size is not None else config.hidden_size * 4,
+                                moe_num_experts=config.num_experts,
+                                # not sure
+                                mlp_impl="grouped",
+                                moe_expert_model_parallelism=False,##### currently fixed
+                                moe_top_k=config.num_experts_per_tok,
+                                moe_capacity_factor=1.25,##### currently fixed
+                                moe_loss_weight=0.1,##### currently fixed
+                                device="meta",
+                                # device=torch.cuda.current_device(),
+                                bf16=False,
+                                fp16=False,
+                            )
+                            total_load_balancing_loss = batched_load_balancing_loss(moe_args)
+                            clear_load_balancing_loss()
+                            loss += total_load_balancing_loss
 
                     # Commit Loss (Prior to Gradient Accumulation Normalization)
-                    metrics.commit(loss=loss)
+                    metrics.commit(loss=loss, load_balance_loss=total_load_balancing_loss)
 
                     # Normalize Loss to account for Gradient Accumulation --> Backward!
                     # [IMPORTANT] Technically speaking, doing gradient accumulation in this way is "incorrect"; this is

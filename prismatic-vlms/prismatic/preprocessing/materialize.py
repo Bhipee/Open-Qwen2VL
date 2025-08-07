@@ -42,7 +42,7 @@ N_CHANNELS = 3
 MIN_KB = 10
 
 # Dataset Initializers =>> Maps Stage --> cls()
-DATASET_INITIALIZER = {"align": AlignDataset, "finetune": FinetuneDataset, "full-finetune": FinetuneDataset, "large-finetune": FinetuneLargeDataset, "pretrain": PreTrainDataset, "full-pretrain": PreTrainDataset}
+DATASET_INITIALIZER = {"align": AlignDataset, "moe-finetune": FinetuneDataset, "finetune": FinetuneDataset, "full-finetune": FinetuneDataset, "large-finetune": FinetuneLargeDataset, "moe-pretrain": PreTrainDataset, "pretrain": PreTrainDataset, "full-pretrain": PreTrainDataset}
 
 
 def get_dataset_and_collator(
@@ -68,7 +68,7 @@ def get_dataset_and_collator(
         )
         return dataset, collator
 
-    elif stage in ["finetune", "large-finetune", "full-finetune"]:
+    elif stage in ["moe-finetune", "finetune", "large-finetune", "full-finetune"]:
         annotation_json, image_dir = dataset_cfg.finetune_stage_components
         dataset = dataset_cls(
             dataset_root_dir / annotation_json,
@@ -79,7 +79,7 @@ def get_dataset_and_collator(
         )
         return dataset, collator
 
-    elif stage in ["pretrain", "full-pretrain"]:
+    elif stage in ["moe-pretrain", "pretrain", "full-pretrain"]:
         collator = PaddedCollatorForMMLanguageModeling(
             tokenizer.model_max_length, tokenizer.pad_token_id, default_image_resolution, padding_side=padding_side
         )
